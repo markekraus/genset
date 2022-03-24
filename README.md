@@ -11,6 +11,7 @@ package main
 
 import (
     "fmt"
+
     genset "github.com/markekraus/genset/pkg"
 )
 
@@ -37,17 +38,33 @@ func main() {
     filtered := s.Filter(func(value int) bool {
         return value < 50
     })
-    fmt.Printf("length: %v\n", s.Len())
-    fmt.Printf("has 3: %v\n", s.Has(3))
-    fmt.Printf("has 90: %v\n", s.Has(90))
+    fmt.Printf("length: %v\n", filtered.Len())
+    fmt.Printf("has 3: %v\n", filtered.Has(3))
+    fmt.Printf("has 90: %v\n", filtered.Has(90))
 
     abort := make(chan struct{})
     for v := range s.Range(abort) {
         fmt.Printf("value: %v\n", v)
-        if v = 5 {
+        if v == 5 {
             close(abort)
             break
         }
     }
 }
+```
+
+Output:
+
+```plaintext
+length: 3
+has 3: true
+has 50: false
+length: 2
+has 2: false
+length: 4
+length: 3
+has 3: true
+has 90: false
+value: 3
+value: 5
 ```
