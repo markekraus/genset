@@ -2,6 +2,10 @@ package genset
 
 import "testing"
 
+type myType struct {
+	a, b int
+}
+
 func TestNew(t *testing.T) {
 	s := New[int]()
 	if len(s.list) != 0 {
@@ -278,5 +282,57 @@ func TestRange(t *testing.T) {
 	}
 	if i != s.Len() {
 		t.Errorf("i = %d, want %d", i, s.Len())
+	}
+}
+
+func TestStructs(t *testing.T) {
+	s1 := New[*myType]()
+	o1 := &myType{1, 2}
+	o2 := &myType{3, 4}
+	o3 := &myType{5, 6}
+	o4 := &myType{6, 7}
+	o5 := &myType{8, 9}
+	s1.Add(o1)
+	s1.Add(o2)
+	s1.Add(o3)
+	s1.Add(o3)
+	if s1.Len() != 3 {
+		t.Errorf("s1.Len() = %d, want %d", s1.Len(), 3)
+	}
+	if !s1.Has(o1) {
+		t.Errorf("s1.Has(o1) = %v, wanted %v", s1.Has(o1), true)
+	}
+	if !s1.Has(o2) {
+		t.Errorf("s1.Has(o2) = %v, wanted %v", s1.Has(o2), true)
+	}
+	if !s1.Has(o3) {
+		t.Errorf("s1.Has(o3) = %v, wanted %v", s1.Has(o3), true)
+	}
+	if s1.Has(o4) {
+		t.Errorf("s1.Has(o4) = %v, wanted %v", s1.Has(o4), false)
+	}
+	s2 := New[*myType]()
+	s2.Add(o1)
+	s2.Add(o3)
+	s2.Add(o4)
+	s2.Add(o5)
+	u := s1.Union(s2)
+	if u.Len() != 5 {
+		t.Errorf("u.Len() = %d, want %d", u.Len(), 5)
+	}
+	if !u.Has(o1) {
+		t.Errorf("u.Has(o1) = %v, wanted %v", u.Has(o1), true)
+	}
+	if !u.Has(o2) {
+		t.Errorf("u.Has(o2) = %v, wanted %v", u.Has(o2), true)
+	}
+	if !u.Has(o3) {
+		t.Errorf("u.Has(o3) = %v, wanted %v", u.Has(o3), false)
+	}
+	if !u.Has(o4) {
+		t.Errorf("u.Has(o4) = %v, wanted %v", u.Has(o4), false)
+	}
+	if !u.Has(o5) {
+		t.Errorf("u.Has(o4) = %v, wanted %v", u.Has(o5), false)
 	}
 }
