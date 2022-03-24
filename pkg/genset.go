@@ -87,10 +87,10 @@ func (s *Set[T]) Intersect(other *Set[T]) *Set[T] {
 }
 
 // Difference returns the subset from Set[T} s, that doesn't exists in Set[T] other
-func (s *Set[T]) Difference(s2 *Set[T]) *Set[T] {
+func (s *Set[T]) Difference(other *Set[T]) *Set[T] {
 	res := New[T]()
 	for v := range s.list {
-		if s2.Has(v) {
+		if other.Has(v) {
 			continue
 		}
 		res.Add(v)
@@ -104,6 +104,7 @@ func (s *Set[T]) Values() []T {
 	i := 0
 	for k := range s.list {
 		res[i] = k
+		i++
 	}
 	return res
 }

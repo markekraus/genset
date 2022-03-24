@@ -24,14 +24,30 @@ func main() {
     s.Add(2)
     s.Add(90)
     s.Add(90)
-    fmt.Printf("has 3: \n", s.Has(3))
-    fmt.Printf("has 50: \n", s.Has(50))
+    fmt.Printf("length: %v\n", s.Len())
+    fmt.Printf("has 3: %v\n", s.Has(3))
+    fmt.Printf("has 50: %v\n", s.Has(50))
+    s.Remove(2)
+    fmt.Printf("length: %v\n", s.Len())
+    fmt.Printf("has 2: %v\n", s.Has(2))
+
+    s.AddMulti(5, 6, 90)
+    fmt.Printf("length: %v\n", s.Len())
+
+    filtered := s.Filter(func(value int) bool {
+        return value < 50
+    })
+    fmt.Printf("length: %v\n", s.Len())
+    fmt.Printf("has 3: %v\n", s.Has(3))
+    fmt.Printf("has 90: %v\n", s.Has(90))
+
+    abort := make(chan struct{})
+    for v := range s.Range(abort) {
+        fmt.Printf("value: %v\n", v)
+        if v = 5 {
+            close(abort)
+            break
+        }
+    }
 }
-```
-
-Output:
-
-```plaintext
-has 3: true
-has 50: false
 ```
