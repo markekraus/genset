@@ -17,7 +17,7 @@ func (s *Set[T]) Add(value T) bool {
 	if !r {
 		s.list[value] = struct{}{}
 	}
-	return r
+	return !r
 }
 
 // Remove removes the value of type T from the Set[T] s and returns true if it was removed from s and false if it was not in s.
@@ -96,6 +96,32 @@ func (s *Set[T]) Difference(s2 *Set[T]) *Set[T] {
 		res.Add(v)
 	}
 	return res
+}
+
+// Values returns a []T containing all values in Set[T] s
+func (s *Set[T]) Values() []T {
+	res := make([]T, s.Len())
+	i := 0
+	for k := range s.list {
+		res[i] = k
+	}
+	return res
+}
+
+// Range is a Generator that will return all values in Set[T] s and will abort when chan abort is closed.
+func (s *Set[T]) Range(abort <-chan struct{}) chan T {
+	ch := make(chan T)
+	go func() {
+		defer close(ch)
+		for k := range s.list {
+			select {
+			case ch <- k:
+			case <-abort:
+				return
+			}
+		}
+	}()
+	return ch
 }
 
 // New creates and new Set[T] s and returns *s
