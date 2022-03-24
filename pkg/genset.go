@@ -1,6 +1,6 @@
 package genset
 
-// Set is a Generic Set/Hash Set.
+// Set is a Generic Set/Hash Set containing values of type T.
 type Set[T comparable] struct {
 	list map[T]struct{}
 }
@@ -47,6 +47,7 @@ func (s *Set[T]) AddMulti(list ...T) {
 	}
 }
 
+// FilterFunc is a predicate definition for the Filter method that accepts a value of type T and returns a bool.
 type FilterFunc[T comparable] func(value T) bool
 
 // Filter returns a subset of Set[T] s, that contains only the values that satisfies the given predicate P.
@@ -74,7 +75,7 @@ func (s *Set[T]) Union(other *Set[T]) *Set[T] {
 	return res
 }
 
-// Intersect returns a Set[T] that is an intersaction of Set[T] s and Set[T] other
+// Intersect returns a Set[T] that is an intersaction of Set[T] s and Set[T] other.
 func (s *Set[T]) Intersect(other *Set[T]) *Set[T] {
 	res := New[T]()
 	for v := range s.list {
@@ -86,7 +87,7 @@ func (s *Set[T]) Intersect(other *Set[T]) *Set[T] {
 	return res
 }
 
-// Difference returns the subset from Set[T} s, that doesn't exists in Set[T] other
+// Difference returns the subset from Set[T] s, that doesn't exists in Set[T] other.
 func (s *Set[T]) Difference(other *Set[T]) *Set[T] {
 	res := New[T]()
 	for v := range s.list {
@@ -98,7 +99,7 @@ func (s *Set[T]) Difference(other *Set[T]) *Set[T] {
 	return res
 }
 
-// Values returns a []T containing all values in Set[T] s
+// Values returns a []T containing all values in Set[T] s.
 func (s *Set[T]) Values() []T {
 	res := make([]T, s.Len())
 	i := 0
@@ -125,7 +126,7 @@ func (s *Set[T]) Range(abort <-chan struct{}) chan T {
 	return ch
 }
 
-// New creates and new Set[T] s and returns *s
+// New creates and new Set[T] s and returns *s.
 func New[T comparable]() *Set[T] {
 	s := &Set[T]{}
 	s.list = make(map[T]struct{})
