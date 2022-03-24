@@ -29,12 +29,12 @@ func (s *Set[T]) Remove(value T) bool {
 	return r
 }
 
-// Size returns the size of Set[T] s
-func (s *Set[T]) Size() int {
+// Len returns the size of Set[T] s.
+func (s *Set[T]) Len() int {
 	return len(s.list)
 }
 
-// Clear removes all items from Set[T] s
+// Clear removes all items from Set[T] s.
 func (s *Set[T]) Clear() {
 	s.list = nil
 	s.list = make(map[T]struct{})

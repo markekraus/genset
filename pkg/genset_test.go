@@ -25,7 +25,7 @@ func TestRemove(t *testing.T) {
 	//s := New[int]()
 }
 
-func TestSize(t *testing.T) {
+func TestLen(t *testing.T) {
 	//s := New[int]()
 }
 
