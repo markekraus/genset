@@ -2,10 +2,6 @@ package genset
 
 import "testing"
 
-type myType struct {
-	a, b int
-}
-
 func TestNew(t *testing.T) {
 	s := New[int]()
 	if len(s.list) != 0 {

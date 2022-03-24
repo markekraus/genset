@@ -15,10 +15,6 @@ import (
     genset "github.com/markekraus/genset/pkg"
 )
 
-type mytype struct {
-    a, b int
-}
-
 func main() {
     s := genset.New[int]()
     s.Add(3)
